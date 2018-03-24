@@ -90,6 +90,8 @@ function end_sections () {
 
 start_section "$(date +"%l:%M %p %Z")" "colour0" "colour3" ",bold"
 
-middle_section "$(date +"%a %b %d")" "colour0" "colour2" ",bold"
+middle_section "$(date +"%a %b %d")" "colour0" "colour2"
+middle_section "$(eval ~/.tmux/battery.sh)" "colour7" "colour0"
 
 end_sections
+
