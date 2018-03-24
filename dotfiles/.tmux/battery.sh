@@ -92,7 +92,7 @@ print_graph() {
 
 get_icon() {
     local status="$1"
-    if [[ $status =~ (charged) ]]; then
+    if [[ $status =~ (charged) ]] || [[ $status =~ (finishing) ]]; then
         echo " ✓ "
     elif [[ $status =~ (^charging) ]]; then
         echo " ⚡ "
@@ -100,7 +100,6 @@ get_icon() {
         echo " 🔋 "
     elif [[ $status =~ (attached) ]]; then
         echo " 🔌 "
-
     fi
 }
 
