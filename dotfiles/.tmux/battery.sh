@@ -95,11 +95,11 @@ get_icon() {
     if [[ $status =~ (charged) ]] || [[ $status =~ (finishing) ]]; then
         echo " ✓ "
     elif [[ $status =~ (^charging) ]]; then
-        echo " ⚡ "
+        echo " ↑ "
     elif [[ $status =~ (^discharging) ]]; then
-        echo " 🔋 "
+        echo " ↓ "
     elif [[ $status =~ (attached) ]]; then
-        echo " 🔌 "
+        echo " ↕ "
     fi
 }
 

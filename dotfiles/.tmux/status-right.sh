@@ -105,7 +105,7 @@ function new_section () {
 #     4 Extra formatting attributes starting with comma, eg ,bold
 
 new_section "$(date +"%l:%M %p %Z")" "colour0" "colour3" ",bold"
-new_section "$(date +"%a %b %d")" "colour0" "colour2"
+new_section "$(date +"%a %b %d")" "colour0" "colour6"
 new_section "$(eval ~/.tmux/battery.sh)" "colour7" "colour0"
 
 # This is needed to finalize the last divider
