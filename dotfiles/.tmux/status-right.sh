@@ -33,15 +33,11 @@ fi
 tmux_status_right=""
 cur_size=0
 last_bg=""
+sections_started=false
 
 # In this file the sections go right to left. There is no truncation outside the
 # starting section. If the section is too long it simply dissapears
 function start_section () {
-    # 1 Contents
-    # 2 Forground colour
-    # 3 Background colour
-    # 4 Extra formatting
-
     tmux_status_right="#[fg=$2,bg=$3$4] $1 "
     last_bg="$3"
     cur_size=$((cur_size + ${#1} + 3))
@@ -54,11 +50,6 @@ function start_section () {
 }
 
 function middle_section () {
-    # 1 Contents
-    # 2 Forground colour
-    # 3 Background colour
-    # 4 Extra formatting
-
     cur_size=$((cur_size + ${#1} + 3))
     if [[ $cur_size -ge $max_width ]]; then
         end_sections
@@ -88,10 +79,35 @@ function end_sections () {
     exit 0
 }
 
-start_section "$(date +"%l:%M %p %Z")" "colour0" "colour3" ",bold"
+function new_section () {
+    # 1 Contents
+    # 2 Forground colour
+    # 3 Background colour
+    # 4 Extra formatting
 
-middle_section "$(date +"%a %b %d")" "colour0" "colour2"
-middle_section "$(eval ~/.tmux/battery.sh)" "colour7" "colour0"
+    if [ -z "$1" ]; then
+        return
+    fi
 
+    if [[ $sections_started = false ]]; then
+        sections_started="t"
+        start_section "$1" "$2" "$3" "$4"
+    else
+        middle_section "$1" "$2" "$3" "$4"
+    fi
+}
+
+# Sections: new_section 1 2 3 4
+# Argument order for sections
+#     1 Contents, section skipped if empty
+#     2 Foreground colour, eg colour0-255, 8 colour palette names, #ffffff
+#     3 Background colour, see foreground
+#     4 Extra formatting attributes starting with comma, eg ,bold
+
+new_section "$(date +"%l:%M %p %Z")" "colour0" "colour3" ",bold"
+new_section "$(date +"%a %b %d")" "colour0" "colour2"
+new_section "$(eval ~/.tmux/battery.sh)" "colour7" "colour0"
+
+# This is needed to finalize the last divider
 end_sections
 

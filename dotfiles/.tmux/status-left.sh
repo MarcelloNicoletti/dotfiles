@@ -24,16 +24,12 @@ TMUX_SESSION="$1"
 tmux_status_left=""
 cur_size=0
 last_bg=""
+sections_started=false
 
 # In this file the sections go left to right
 # When a section is too long it is truncated for length.
 # If it is tuncated to only the dividers the whole section disappears
 function start_section () {
-    # 1 Contents
-    # 2 Forground colour
-    # 3 Background colour
-    # 4 Extra formatting
-
     tmux_status_left="#[fg=$2,bg=$3$4] $1"
     last_bg="$3"
     cur_size=$((cur_size + ${#1}))
@@ -49,11 +45,6 @@ function start_section () {
 }
 
 function middle_section () {
-    # 1 Contents
-    # 2 Forground colour
-    # 3 Background colour
-    # 4 Extra formatting
-
     cur_size=$((cur_size + 3))
     if [[ $cur_size -ge $LEFT_STATUS_LENGTH ]]; then
         end_sections
@@ -91,8 +82,28 @@ function end_sections () {
     exit 0
 }
 
-start_section "$TMUX_SESSION" "colour0" "colour9" ",bold"
+function new_section () {
+    if [ -z "$1" ]; then
+        return
+    fi
 
-middle_section "$(whoami)@$(hostname -s)" "colour0" "colour7"
+    if [[ $sections_started = false ]]; then
+        sections_started="t"
+        start_section "$1" "$2" "$3" "$4"
+    else
+        middle_section "$1" "$2" "$3" "$4"
+    fi
+}
 
+# Sections: new_section 1 2 3 4
+# Argument order for sections
+#     1 Contents, section skipped if empty
+#     2 Foreground colour, eg colour0-255, 8 colour palette names, #ffffff
+#     3 Background colour, see foreground
+#     4 Extra formatting attributes starting with comma, eg ,bold
+
+new_section "$TMUX_SESSION" "colour0" "colour9" ",bold"
+new_section "$(whoami)@$(hostname -s)" "colour0" "colour7"
+
+# This is needed to finalize the last divider
 end_sections
