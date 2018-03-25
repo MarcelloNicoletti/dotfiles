@@ -50,7 +50,15 @@ function start_section () {
 }
 
 function middle_section () {
-    cur_size=$((cur_size + ${#1} + 3))
+    local content
+    local estimate
+    estimate="$5"
+    if [[ $((cur_size + estimate + 3)) -ge $max_width ]]; then
+        return
+    fi
+
+    content=$(eval "echo $1")
+    cur_size=$((cur_size + ${#content} + 3))
     if [[ $cur_size -ge $max_width ]]; then
         end_sections
     fi
@@ -61,7 +69,7 @@ function middle_section () {
         tmux_status_right="#[fg=$last_bg,bg=$3,none]$PL_LEFT_BLACK\
 $tmux_status_right"
     fi
-    tmux_status_right="#[fg=$2,bg=$3$4] $1 $tmux_status_right"
+    tmux_status_right="#[fg=$2,bg=$3$4] $content $tmux_status_right"
 
     last_bg="$3"
 }
@@ -80,10 +88,11 @@ $tmux_status_right"
 }
 
 function new_section () {
-    # 1 Contents
+    # 1 Contents, or content template
     # 2 Forground colour
     # 3 Background colour
-    # 4 Extra formatting
+    # 4 Extra formatting or blank if no extra formatting but 5th argument
+    # 5 Estimate of length if using template
 
     if [ -z "$1" ]; then
         return
@@ -91,22 +100,28 @@ function new_section () {
 
     if [[ $sections_started = false ]]; then
         sections_started="t"
-        start_section "$1" "$2" "$3" "$4"
+        start_section "$(eval "echo $1")" "$2" "$3" "$4"
     else
-        middle_section "$1" "$2" "$3" "$4"
+        middle_section "$1" "$2" "$3" "$4" "$5"
     fi
 }
 
 # Sections: new_section 1 2 3 4
 # Argument order for sections
-#     1 Contents, section skipped if empty
+#     1 Contents, section skipped if empty, can be a template (single quotes)
 #     2 Foreground colour, eg colour0-255, 8 colour palette names, #ffffff
 #     3 Background colour, see foreground
 #     4 Extra formatting attributes starting with comma, eg ,bold
+#     5 Estimate of length if using template
+#         needs 4th argument even if no extra formatting
+#         use 0 or ommit to force template expansion
+#         Expanded template is still checked for length
+#         so estimate can safely be too small
 
-new_section "$(date +"%l:%M %p %Z")" "colour0" "colour3" ",bold"
-new_section "$(date +"%a %b %d")" "colour0" "colour6"
-new_section "$(eval ~/.tmux/battery.sh)" "colour7" "colour0"
+# new_sec   content                      fgColour  bgColour  extra   est
+new_section '$(date +"%l:%M %p %Z")'     "colour0" "colour3" ",bold" "11"
+new_section '$(date +"%a %b %d")'        "colour0" "colour6" ""      "10"
+new_section '$(eval ~/.tmux/battery.sh)' "colour7" "colour0" ""       "7"
 
 # This is needed to finalize the last divider
 end_sections
