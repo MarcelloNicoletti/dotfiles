@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Powerline font glyhps
+# Powerline font glyphs
 POWERLINE_ENABLE=true
 PL_RIGHT_BLACK=$(printf "\\uE0B0")
 PL_RIGHT=$(printf "\\uE0B1")
@@ -15,15 +15,15 @@ if [[ $POWERLINE_ENABLE = false ]]; then
 fi
 
 #tmux values
-LEFT_STATUS_LENGTH=$(tmux display -p "#{status-left-length}")
-RIGHT_STATUS_LENGTH=$(tmux display -p "#{status-right-length}")
-CLIENT_WIDTH="$1"
-STATUS_BG=$(tmux display -p "#{status-bg}")
+TMUX_STATUS_LEFT_LENGTH="$1"
+TMUX_STATUS_RIGHT_LENGTH="$2"
+TMUX_CLIENT_WIDTH="$3"
+TMUX_STATUS_BG="$4"
 
-max_width=$((CLIENT_WIDTH - LEFT_STATUS_LENGTH - 10))
+max_width=$((TMUX_CLIENT_WIDTH - TMUX_STATUS_LEFT_LENGTH - 10))
 
-if [[ $RIGHT_STATUS_LENGTH -lt "$max_width" ]]; then
-    max_width="$RIGHT_STATUS_LENGTH"
+if [[ $TMUX_STATUS_RIGHT_LENGTH -lt "$max_width" ]]; then
+    max_width="$TMUX_STATUS_RIGHT_LENGTH"
 fi
 if [[ $max_width -le 4 ]]; then
     exit 0
@@ -36,7 +36,7 @@ last_bg=""
 sections_started=false
 
 # In this file the sections go right to left. There is no truncation outside the
-# starting section. If the section is too long it simply dissapears
+# starting section. If the section is too long it simply disappears
 function start_section () {
     tmux_status_right="#[fg=$2,bg=$3$4] $1 "
     last_bg="$3"
@@ -75,10 +75,10 @@ $tmux_status_right"
 }
 
 function end_sections () {
-    if [[ $last_bg = "$STATUS_BG" ]]; then
+    if [[ $last_bg = "$TMUX_STATUS_BG" ]]; then
         tmux_status_right="$PL_LEFT$tmux_status_right"
     else
-        tmux_status_right="#[fg=$last_bg,bg=$STATUS_BG]$PL_LEFT_BLACK\
+        tmux_status_right="#[fg=$last_bg,bg=$TMUX_STATUS_BG]$PL_LEFT_BLACK\
 $tmux_status_right"
     fi
 
@@ -89,7 +89,7 @@ $tmux_status_right"
 
 function new_section () {
     # 1 Contents, or content template
-    # 2 Forground colour
+    # 2 Foreground colour
     # 3 Background colour
     # 4 Extra formatting or blank if no extra formatting but 5th argument
     # 5 Estimate of length if using template
@@ -114,7 +114,7 @@ function new_section () {
 #     4 Extra formatting attributes starting with comma, eg ,bold
 #     5 Estimate of length if using template
 #         needs 4th argument even if no extra formatting
-#         use 0 or ommit to force template expansion
+#         use 0 or omit to force template expansion
 #         Expanded template is still checked for length
 #         so estimate can safely be too small
 
