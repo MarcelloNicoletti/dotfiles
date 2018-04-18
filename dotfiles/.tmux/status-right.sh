@@ -119,6 +119,7 @@ function new_section () {
 #         so estimate can safely be too small
 
 # new_sec   content                      fgColour  bgColour  extra   est
+new_section '$(eval "~/.tmux/countdown.sh \"REDACTED\" \"REDACTED\"")' "colour0" "colour4" "" "20"
 new_section '$(date +"%l:%M %p %Z")'     "colour0" "colour3" ",bold" "11"
 new_section '$(date +"%a %b %d")'        "colour0" "colour6" ""      "10"
 new_section '$(eval ~/.tmux/battery.sh)' "colour7" "colour0" ""       "7"
