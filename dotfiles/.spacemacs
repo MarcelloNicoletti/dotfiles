@@ -64,11 +64,11 @@ This function should only modify configuration layer settings."
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      (spell-checking :variables
+                     spell-checking-enable-by-default nil
                      enable-flyspell-auto-completion nil
        )
      (syntax-checking :variables
-                      :enabled-for javascript python ruby
-                      :enabled-for-modes shell-script-mode
+                      syntax-checking-enable-by-default nil
        )
      ;; themes-megapack
      ;; version-control
