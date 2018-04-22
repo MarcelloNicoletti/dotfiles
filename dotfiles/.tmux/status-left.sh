@@ -18,6 +18,7 @@ fi
 TMUX_STATUS_LEFT_LENGTH="$1"
 TMUX_STATUS_BG="$2"
 TMUX_SESSION_NAME="$3"
+TMUX_CLIENT_PREFIX="$4"
 
 # To allow for last divider
 TMUX_STATUS_LEFT_LENGTH=$((TMUX_STATUS_LEFT_LENGTH - 4))
@@ -94,13 +95,19 @@ function new_section () {
     fi
 }
 
+function prefix_helper () {
+    if [ "$1" = "1" ]; then
+        echo "*"
+    fi
+}
+
 # Sections: new_section 1 2 3 4
 # Argument order for sections
 #     1 Contents, section skipped if empty
 #     2 Foreground colour, eg colour0-255, 8 colour palette names, #ffffff
 #     3 Background colour, see foreground
 #     4 Extra formatting attributes starting with comma, eg ,bold
-
+new_section "$(prefix_helper $TMUX_CLIENT_PREFIX)" "colour0" "colour1" ",bold"
 new_section "$TMUX_SESSION_NAME" "colour0" "colour9" ",bold"
 new_section "$(whoami)@$(hostname -s)" "colour0" "colour7"
 
