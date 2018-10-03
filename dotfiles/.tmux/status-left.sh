@@ -26,6 +26,7 @@ TMUX_STATUS_LEFT_LENGTH=$((TMUX_STATUS_LEFT_LENGTH - 4))
 # Status values
 tmux_status_left=""
 cur_size=0
+last_fg=""
 last_bg=""
 sections_started=false
 
@@ -34,6 +35,7 @@ sections_started=false
 # If it is truncated to only the dividers the whole section disappears
 function start_section () {
     tmux_status_left="#[fg=$2,bg=$3$4] $1"
+    last_fg="$2"
     last_bg="$3"
     cur_size=$((cur_size + ${#1}))
 
@@ -52,13 +54,14 @@ function middle_section () {
     fi
 
     if [[ $last_bg = "$3" ]]; then
-        tmux_status_left="$tmux_status_left #[none]$PL_RIGHT"
+        tmux_status_left="$tmux_status_left #[fg=$last_fg,none]$PL_RIGHT"
     else
         tmux_status_left="$tmux_status_left #[fg=$last_bg,bg=$3,none]\
 $PL_RIGHT_BLACK"
     fi
 
     tmux_status_left="$tmux_status_left#[fg=$2,bg=$3$4] $1"
+    last_fg="$2"
     last_bg="$3"
     cur_size=$((cur_size + ${#1}))
 
@@ -72,7 +75,7 @@ $PL_RIGHT_BLACK"
 
 function end_sections () {
     if [[ $last_bg = "$TMUX_STATUS_BG" ]]; then
-        tmux_status_left="$tmux_status_left #[none]$PL_RIGHT"
+        tmux_status_left="$tmux_status_left #[fg=$last_fg,none]$PL_RIGHT"
     else
         tmux_status_left="$tmux_status_left \
 #[fg=$last_bg,bg=$TMUX_STATUS_BG,none]$PL_RIGHT_BLACK"
@@ -108,8 +111,8 @@ function prefix_helper () {
 #     3 Background colour, see foreground
 #     4 Extra formatting attributes starting with comma, eg ,bold
 new_section "$(prefix_helper $TMUX_CLIENT_PREFIX)" "colour0" "colour1" ",bold"
-new_section "$TMUX_SESSION_NAME" "colour0" "colour9" ",bold"
-new_section "$(whoami)@$(hostname -s)" "colour0" "colour7"
+new_section "$TMUX_SESSION_NAME"                   "colour0" "colour9" ",bold"
+new_section "$(whoami)@$(hostname -s)"             "colour0" "colour7"
 
 # This is needed to finalize the last divider
 end_sections

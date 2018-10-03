@@ -32,6 +32,7 @@ fi
 # Status values
 tmux_status_right=""
 cur_size=0
+last_fg=""
 last_bg=""
 sections_started=false
 
@@ -39,6 +40,7 @@ sections_started=false
 # starting section. If the section is too long it simply disappears
 function start_section () {
     tmux_status_right="#[fg=$2,bg=$3$4] $1 "
+    last_fg="$2"
     last_bg="$3"
     cur_size=$((cur_size + ${#1} + 3))
 
@@ -68,22 +70,23 @@ function middle_section () {
     fi
 
     if [[ $last_bg = "$3" ]]; then
-        tmux_status_right="#[none]$PL_LEFT$tmux_status_right"
+        tmux_status_right="#[fg=$last_fg,none]$PL_LEFT$tmux_status_right"
     else
         tmux_status_right="#[fg=$last_bg,bg=$3,none]$PL_LEFT_BLACK\
 $tmux_status_right"
     fi
     tmux_status_right="#[fg=$2,bg=$3$4] $content $tmux_status_right"
 
+    last_fg="$2"
     last_bg="$3"
 }
 
 function end_sections () {
     if [[ $last_bg = "$TMUX_STATUS_BG" ]]; then
-        tmux_status_right="$PL_LEFT$tmux_status_right"
+        tmux_status_right="#[fg=$last_fg,none]$PL_LEFT$tmux_status_right"
     else
-        tmux_status_right="#[fg=$last_bg,bg=$TMUX_STATUS_BG]$PL_LEFT_BLACK\
-$tmux_status_right"
+        tmux_status_right="#[fg=$last_bg,bg=$TMUX_STATUS_BG,none]\
+$PL_LEFT_BLACK$tmux_status_right"
     fi
 
     echo " $tmux_status_right"
