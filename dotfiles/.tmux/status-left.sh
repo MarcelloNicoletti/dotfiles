@@ -1,18 +1,6 @@
 #!/usr/bin/env bash
 
-# Powerline font glyphs
-POWERLINE_ENABLE=true
-PL_RIGHT_BLACK=$(printf "\\uE0B0")
-PL_RIGHT=$(printf "\\uE0B1")
-PL_LEFT_BLACK=$(printf "\\uE0B2")
-PL_LEFT=$(printf "\\uE0B3")
-
-if [[ $POWERLINE_ENABLE = false ]]; then
-    PL_RIGHT_BLACK=$(printf "\\u2551")
-    PL_RIGHT=$(printf "\\u2502")
-    PL_LEFT_BLACK=$(printf "\\u2551")
-    PL_LEFT=$(printf "\\u2502")
-fi
+source "$HOME/.tmux/glyphs.sh"
 
 # tmux values
 TMUX_STATUS_LEFT_LENGTH="$1"
