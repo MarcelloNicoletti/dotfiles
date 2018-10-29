@@ -117,7 +117,7 @@ function new_section () {
 new_section '$(date +"%l:%M %p %Z")'     "colour0" "colour3" ",bold" "11"
 new_section '$(date +"%a %b %d")'        "colour0" "colour6" ""      "10"
 new_section '$(~/.tmux/battery.sh)'      "colour7" "colour0" ""       "7"
-new_section '$(~/.tmux/nowplaying.sh)'   "colour0" "colour2" ""      "0"
+new_section '$(~/.tmux/nowplaying.sh)'   "colour2" "colour0" ""       "0"
 
 # This is needed to finalize the last divider
 end_sections
