@@ -42,7 +42,7 @@ function middle_section () {
     fi
 
     if [[ $last_bg = "$3" ]]; then
-        tmux_status_left="$tmux_status_left #[fg=$last_fg,none]$PL_RIGHT"
+        tmux_status_left="$tmux_status_left #[fg=$last_fg,bold]$PL_RIGHT#[none]"
     else
         tmux_status_left="$tmux_status_left #[fg=$last_bg,bg=$3,none]\
 $PL_RIGHT_BLACK"
@@ -63,7 +63,7 @@ $PL_RIGHT_BLACK"
 
 function end_sections () {
     if [[ $last_bg = "$TMUX_STATUS_BG" ]]; then
-        tmux_status_left="$tmux_status_left #[fg=$last_fg,none]$PL_RIGHT"
+        tmux_status_left="$tmux_status_left #[fg=$last_fg,bold]$PL_RIGHT#[none]"
     else
         tmux_status_left="$tmux_status_left \
 #[fg=$last_bg,bg=$TMUX_STATUS_BG,none]$PL_RIGHT_BLACK"

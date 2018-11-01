@@ -58,7 +58,7 @@ function middle_section () {
     fi
 
     if [[ $last_bg = "$3" ]]; then
-        tmux_status_right="#[fg=$last_fg,none]$PL_LEFT$tmux_status_right"
+        tmux_status_right="#[fg=$last_fg,bold]$PL_LEFT#[none]$tmux_status_right"
     else
         tmux_status_right="#[fg=$last_bg,bg=$3,none]$PL_LEFT_BLACK\
 $tmux_status_right"
@@ -71,7 +71,7 @@ $tmux_status_right"
 
 function end_sections () {
     if [[ $last_bg = "$TMUX_STATUS_BG" ]]; then
-        tmux_status_right="#[fg=$last_fg,none]$PL_LEFT$tmux_status_right"
+        tmux_status_right="#[fg=$last_fg,bold]$PL_LEFT#[none]$tmux_status_right"
     else
         tmux_status_right="#[fg=$last_bg,bg=$TMUX_STATUS_BG,none]\
 $PL_LEFT_BLACK$tmux_status_right"
@@ -113,11 +113,11 @@ function new_section () {
 #         Expanded template is still checked for length
 #         so estimate can safely be too small
 
-# new_sec   content                      fgColour  bgColour  extra   est
-new_section '$(date +"%l:%M %p %Z")'     "colour0" "colour3" ",bold" "11"
-new_section '$(date +"%a %b %d")'        "colour0" "colour6" ""      "10"
-new_section '$(~/.tmux/battery.sh)'      "colour7" "colour0" ""       "7"
-new_section '$(~/.tmux/nowplaying.sh)'   "colour2" "colour0" ""       "0"
+# new_sec   content                             fgColour  bgColour  extra   est
+new_section '$(date +"%l:%M %p %Z")'            "colour0" "colour3" ",bold" "11"
+new_section '$(date +"%a %b %d")'               "colour0" "colour6" ""      "10"
+new_section '$(~/.tmux/battery.sh)'             "colour7" "colour0" ""       "7"
+new_section '$(~/.tmux/nowplaying.sh)'          "colour2" "colour0" ""       "0"
 
 # This is needed to finalize the last divider
 end_sections
