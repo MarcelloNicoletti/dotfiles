@@ -106,18 +106,20 @@ function new_section () {
 #     1 Contents, section skipped if empty, can be a template (single quotes)
 #     2 Foreground colour, eg colour0-255, 8 colour palette names, #ffffff
 #     3 Background colour, see foreground
-#     4 Extra formatting attributes starting with comma, eg ,bold
+#     4 Extra formatting attributes starting with comma, eg ",bold"
 #     5 Estimate of length if using template
 #         needs 4th argument even if no extra formatting
 #         use 0 or omit to force template expansion
 #         Expanded template is still checked for length
 #         so estimate can safely be too small
 
-# new_sec   content                             fgColour  bgColour  extra   est
-new_section '$(date +"%l:%M %p %Z")'            "colour0" "colour3" ",bold" "11"
-new_section '$(date +"%a %b %d")'               "colour0" "colour6" ""      "10"
-new_section '$(~/.tmux/battery.sh)'             "colour7" "colour0" ""       "7"
-new_section '$(~/.tmux/nowplaying.sh)'          "colour2" "colour0" ""       "0"
+# new_sec   content                           fgColour   bgColour  extra    est
+new_section '$(date +"%l:%M %p %Z")'          "colour0"  "colour3"  ",bold" "11"
+new_section '$(date +"%a %b %d")'             "colour0"  "colour6"  ""      "10"
+new_section '$(~/.tmux/battery.sh)'           "colour7"  "colour0"  ""      "07"
+new_section '$(~/.tmux/nowplaying.sh)'        "colour2"  "colour0"  ""      "00"
+new_section '$(~/.tmux/countdown.sh "Wed Dec 07 20:00:00 2018 -0700" \
+    "⊕ SSB:U ⊕")'                             "colour13" "colour11" ",bold" "20"
 
 # This is needed to finalize the last divider
 end_sections
