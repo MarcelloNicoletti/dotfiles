@@ -114,11 +114,11 @@ function new_section () {
 #         so estimate can safely be too small
 
 # new_sec   content                           fgColour   bgColour  extra    est
-new_section '$(date +"%l:%M %p %Z")'          "colour0"  "colour3"  ",bold" "11"
+new_section '$(date +"%l:%M %p")'             "colour0"  "colour3"  ",bold" "11"
 new_section '$(date +"%a %b %d")'             "colour0"  "colour6"  ""      "10"
 new_section '$(~/.tmux/battery.sh)'           "colour7"  "colour0"  ""      "07"
-new_section '$(~/.tmux/nowplaying.sh)'        "colour2"  "colour0"  ""      "00"
-new_section '$(~/.tmux/countdown.sh "Wed Dec 07 20:00:00 2018 -0700" \
+new_section '$(~/.tmux/nowplaying.sh)'        "colour2"  "colour0"  ",bold" "00"
+new_section '$(~/.tmux/countdown.sh "2018-12-07 20:00:00 -0700" \
     "⊕ SSB:U ⊕")'                             "colour13" "colour11" ",bold" "20"
 
 # This is needed to finalize the last divider
