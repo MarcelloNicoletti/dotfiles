@@ -76,15 +76,15 @@ print_graph() {
     if [ -z "$1" ]; then
         echo ""
     elif [ "$1" -lt "20" ]; then
-        echo "▁"
+        echo "#[fg=red]▁"
     elif [ "$1" -lt "40" ]; then
-        echo "▂"
+        echo "#[fg=yellow]▂"
     elif [ "$1" -lt "60" ]; then
-        echo "▃"
+        echo "#[fg=yellow]▃"
     elif [ "$1" -lt "80" ]; then
-        echo "▅"
+        echo "#[fg=green]▅"
     else
-        echo "▇"
+        echo "#[fg=green]▇"
     fi
 }
 
@@ -93,13 +93,13 @@ print_graph() {
 get_icon() {
     local status="$1"
     if [[ $status =~ (charged) ]] || [[ $status =~ (finishing) ]]; then
-        echo " ✓ "
+        echo "#[fg=blue]✓"
     elif [[ $status =~ (^charging) ]]; then
-        echo " ↑ "
+        echo "#[fg=green]↑"
     elif [[ $status =~ (^discharging) ]]; then
-        echo " ↓ "
+        echo "#[fg=red]↓"
     elif [[ $status =~ (attached) ]]; then
-        echo " ↕ "
+        echo "↕"
     fi
 }
 
@@ -113,6 +113,6 @@ main() {
         exit 0
     fi
 
-    echo "$percentage%$icon$graph"
+    echo "$icon $graph #[fg=default]$percentage%"
 }
 main
