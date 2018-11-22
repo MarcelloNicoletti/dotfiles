@@ -24,15 +24,23 @@ last_fg=""
 last_bg=""
 sections_started=false
 
+# Strips Tmux color commands to get the actual content length once displayed
+# This doesn't expand tmux expressions ${}
+function content_size () {
+    local stripped="$(echo "$1" | perl -pe "s/\#\[.*?\]//g")"
+    echo ${#stripped}
+}
+
 # In this file the sections go right to left. There is no truncation outside the
 # starting section. If the section is too long it simply disappears
 function start_section () {
     tmux_status_right="#[fg=$2,bg=$3$4] $1 "
     last_fg="$2"
     last_bg="$3"
-    cur_size=$((cur_size + ${#1} + 3))
+    cur_size=$((cur_size + $(content_size "$1") + 3))
 
     if [[ $cur_size -ge $max_width ]]; then
+        # Note: Don't end the starting section with formatting or it risks getting truncated
         end_of_status=$((${#tmux_status_right} - (cur_size - max_width) - 2))
         tmux_status_right="${tmux_status_right:0:end_of_status} "
         end_sections
@@ -47,13 +55,13 @@ function middle_section () {
         return
     fi
 
-    content=$(eval "echo $1")
+    content="$(eval "echo \"$1\"")"
     if [ -z "$content" ]; then
         return
     fi
 
-    cur_size=$((cur_size + ${#content} + 3))
-    if [[ $cur_size -ge $max_width ]]; then
+    cur_size=$((cur_size + $(content_size "$content") + 3))
+    if [[ $cur_size -gt $max_width ]]; then
         end_sections
     fi
 
@@ -78,7 +86,6 @@ $PL_LEFT_BLACK$tmux_status_right"
     fi
 
     echo " $tmux_status_right"
-
     exit 0
 }
 
@@ -87,7 +94,7 @@ function new_section () {
     # 2 Foreground colour
     # 3 Background colour
     # 4 Extra formatting or blank if no extra formatting but 5th argument
-    # 5 Estimate of length if using template
+#     5 Estimate of length of evaluated template
 
     if [ -z "$1" ]; then
         return
@@ -95,7 +102,7 @@ function new_section () {
 
     if [[ $sections_started = false ]]; then
         sections_started="t"
-        start_section "$(eval "echo $1")" "$2" "$3" "$4"
+        start_section "$(eval "echo \"$1\"")" "$2" "$3" "$4"
     else
         middle_section "$1" "$2" "$3" "$4" "$5"
     fi
@@ -103,21 +110,22 @@ function new_section () {
 
 # Sections: new_section 1 2 3 4
 # Argument order for sections
-#     1 Contents, section skipped if empty, can be a template (single quotes)
+#     1 Contents, section skipped if empty,
+#         lazy evaluates templates (if using single quotes)
 #     2 Foreground colour, eg colour0-255, 8 colour palette names, #ffffff
 #     3 Background colour, see foreground
 #     4 Extra formatting attributes starting with comma, eg ",bold"
-#     5 Estimate of length if using template
+#     5 Estimate of length of evaluated template
 #         needs 4th argument even if no extra formatting
-#         use 0 or omit to force template expansion
-#         Expanded template is still checked for length
+#         use 0 or omit to force template evaluation
+#         Evaluated template is still checked for length
 #         so estimate can safely be too small
 
 # new_sec   content                           fgColour   bgColour  extra    est
 new_section '$(date +"%l:%M %p")'             "colour0"  "colour3"  ",bold" "11"
 new_section '$(date +"%a %b %d")'             "colour0"  "colour6"  ""      "10"
-new_section '$(~/.tmux/battery.sh)'           "colour7"  "colour0"  ""      "07"
-new_section '$(~/.tmux/nowplaying.sh)'        "colour2"  "colour0"  ",bold" "00"
+new_section '$(~/.tmux/nowplaying.sh)'        "colour2"  "colour0"  ",bold" "07"
+new_section '$(~/.tmux/battery.sh)'           "default"  "colour0"  ""      "07"
 new_section '$(~/.tmux/countdown.sh "2018-12-07 20:00:00 -0700" \
     "⊕ SSB:U ⊕")'                             "colour13" "colour11" ",bold" "20"
 
