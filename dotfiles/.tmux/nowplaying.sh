@@ -35,8 +35,6 @@ if now_playing then
   end repeat
 
   if track_length < length of track_name then
-    log track_length - 1
-    log length of track_name
     set track_name to (text 1 thru (track_length - 1) of track_name) & "…"
   end if
 
