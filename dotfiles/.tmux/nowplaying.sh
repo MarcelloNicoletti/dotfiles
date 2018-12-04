@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+width="$1"
+if [[ -z "$width" ]]; then
+    width=47
+fi
+
+if (( "$width" < 11 )); then
+    exit 0
+fi
+
 command -v osascript > /dev/null 2>&1  && osascript <<SCPT
 #!/usr/bin/env osascript
 
@@ -26,7 +35,7 @@ end if
 if now_playing then
   set track_length to length of track_name
   set artist_length to length of artist_name
-  repeat while (extra_length + track_length + artist_length) > 47
+  repeat while (extra_length + track_length + artist_length) > $width
     if track_length > artist_length then
       set track_length to track_length - 1
     else

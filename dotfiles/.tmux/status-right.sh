@@ -108,6 +108,10 @@ function new_section () {
     fi
 }
 
+# Extra Calculations
+
+np_w="$(( "$max_width" - 33 ))"
+
 # Sections: new_section 1 2 3 4
 # Argument order for sections
 #     1 Contents, section skipped if empty,
@@ -124,7 +128,8 @@ function new_section () {
 # new_sec   content                           fgColour   bgColour  extra    est
 new_section '$(date +"%l:%M %p")'             "colour0"  "colour3"  ",bold" "11"
 new_section '$(date +"%a %b %d")'             "colour0"  "colour6"  ""      "10"
-new_section '$(~/.tmux/nowplaying.sh)'        "colour2"  "colour0"  ",bold" "07"
+new_section "\$(~/.tmux/nowplaying.sh $np_w)" "colour2"  "colour0"  ",bold" \
+            "$np_w"
 new_section '$(~/.tmux/battery.sh)'           "default"  "colour0"  ""      "07"
 new_section '$(~/.tmux/countdown.sh "2018-12-07 20:00:00 -0700" \
     "⊕ SSB:U ⊕")'                             "colour13" "colour11" ",bold" "20"
