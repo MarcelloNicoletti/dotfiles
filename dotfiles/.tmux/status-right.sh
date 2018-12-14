@@ -40,7 +40,8 @@ function start_section () {
     cur_size=$((cur_size + $(content_size "$1") + 3))
 
     if [[ $cur_size -ge $max_width ]]; then
-        # Note: Don't end the starting section with formatting or it risks getting truncated
+        # Note: Don't end the starting section with formatting or it
+        # risks getting truncated
         end_of_status=$((${#tmux_status_right} - (cur_size - max_width) - 2))
         tmux_status_right="${tmux_status_right:0:end_of_status} "
         end_sections
@@ -128,11 +129,8 @@ np_w="$(( "$max_width" - 33 ))"
 # new_sec   content                           fgColour   bgColour  extra    est
 new_section '$(date +"%l:%M %p")'             "colour0"  "colour3"  ",bold" "11"
 new_section '$(date +"%a %b %d")'             "colour0"  "colour6"  ""      "10"
-new_section "\$(~/.tmux/nowplaying.sh $np_w)" "colour2"  "colour0"  ",bold" \
-            "$np_w"
+new_section "\$(~/.tmux/nowplaying.sh $np_w)" "colour0"  "colour2"  ""   "$np_w"
 new_section '$(~/.tmux/battery.sh)'           "default"  "colour0"  ""      "07"
-new_section '$(~/.tmux/countdown.sh "2018-12-07 20:00:00 -0700" \
-    "⊕ SSB:U ⊕")'                             "colour13" "colour11" ",bold" "20"
 
 # This is needed to finalize the last divider
 end_sections

@@ -51,6 +51,6 @@ if now_playing then
     set artist_name to (text 1 thru (artist_length - 1) of artist_name) & "…"
   end if
 
-  "♫ " & track_name & " ♪ " & artist_name & " ♫"
+  "♫ #[bold]" & track_name & "#[none] ♪ " & artist_name & " ♫"
 end if
 SCPT
