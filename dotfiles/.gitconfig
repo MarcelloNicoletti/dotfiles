@@ -6,6 +6,15 @@
 [user]
 	name = MarcelloNicoletti
 	email = marcello.s.nicoletti@gmail.com
+	signingkey = 0123456789ABCDEF0123456789ABCDEF01234567
 [core]
 	excludesfile = ~/.gitignore_global
   pager = less -F -X
+[gpg]
+	program = /path/to/gpg
+[commit]
+	gpgsign = true
+[grep]
+	lineNumber = true
+[alias]
+	g = grep --break --heading --line-number

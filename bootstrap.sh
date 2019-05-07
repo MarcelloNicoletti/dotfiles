@@ -46,3 +46,13 @@ while read -r -d '' file; do
     ln -s "$dotfiles_dir/$file" "$HOME/$file"
 done < <(find . -maxdepth 1 -not \( -name "." -o -name ".DS_Store" \) -print0)
 echo "...done"
+
+echo
+echo "Don't forget to update the Git GPG variables for this platform."
+echo "Both gpg.program and user.signingkey are placeholders."
+if which gpg > /dev/null 2>&1; then
+    echo " GPG is installed at $(which gpg)"
+    echo ' Try: git config --global gpg.program $(which gpg)'
+else
+    echo " You need to install GPG first"
+fi
