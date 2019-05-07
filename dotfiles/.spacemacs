@@ -54,6 +54,7 @@ This function should only modify configuration layer settings."
      javascript
      markdown
      ;; neotree
+     nginx
      (org :variables
           org-enable-org-journal-support t
           org-projectile-file "TODOs.org"
@@ -73,6 +74,7 @@ This function should only modify configuration layer settings."
      ;; themes-megapack
      ;; version-control
      vimscript
+     vinegar
      windows-scripts
      yaml
      ;; ycmd
@@ -94,7 +96,9 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(
+        import-js ; This is a workaround from https://github.com/syl20bnr/spacemacs/issues/12144
+                                    )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -456,7 +460,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
-   dotspacemacs-zone-out-when-idle 3600
+   dotspacemacs-zone-out-when-idle nil
 
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
