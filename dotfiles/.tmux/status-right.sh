@@ -28,7 +28,12 @@ sections_started=false
 # This doesn't expand tmux expressions ${}
 function content_size () {
     local stripped="$(echo "$1" | perl -pe "s/\#\[.*?\]//g")"
-    echo ${#stripped}
+    if [ -x /usr/local/bin/gwc ]; then
+        # gnu wc (brew installed as gwc) has -L for max line length
+        echo $stripped | /usr/local/bin/gwc -L
+    else
+        echo ${#stripped}
+    fi
 }
 
 # In this file the sections go right to left. There is no truncation outside the

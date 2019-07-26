@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+
+# TODO: Start using something like gnu wc -L for the string length. This will
+# help handle double-wide ("full width") characters in song names (ex. CJK
+# ideographs)
+
+# TODO: Escape special chars like " and '
+
 width="$1"
 if [[ -z "$width" ]]; then
     width=47
