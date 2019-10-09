@@ -2,7 +2,7 @@
 
 # TODO: Start using something like gnu wc -L for the string length. This will
 # help handle double-wide ("full width") characters in song names (ex. CJK
-# ideographs)
+# ideograms)
 
 # TODO: Escape special chars like " and '
 
@@ -23,8 +23,8 @@ set artist_name to ""
 set now_playing to false
 set extra_length to 7
 
-if application "iTunes" is running then
-  tell application "iTunes" to if player state is playing then
+if application "Music" is running then
+  tell application "Music" to if player state is playing then
     set track_name to name of current track
     set artist_name to artist of current track
     set now_playing to true
