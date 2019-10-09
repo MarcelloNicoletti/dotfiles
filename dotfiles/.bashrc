@@ -2,7 +2,7 @@
 
 # System vars
 export PATH="$PATH:$HOME/bin"
-export EDITOR=$( which nano )
+export EDITOR="$(command -v nano)"
 
 # Bash prompt
 RegularUserPart="\\[\\e[36m\\]\\u\\[\\e[0m\\]"

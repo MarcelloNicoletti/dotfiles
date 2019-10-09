@@ -18,15 +18,15 @@ function displaytime {
 
     if [[ $T -lt 0 ]] && [[ $3 ]]; then
         sep="since"
-        T=$((T * -1))
+        T="$((T * -1))"
     fi
 
-    local D="$((T/60/60/24))"
-    local H="$((T/60/60%24))"
-    local M="$((T/60%60))"
-    local S="$((T%60))"
+    local D="$((T / 60 / 60 / 24))"
+    local H="$((T / 60 / 60 % 24))"
+    local M="$((T / 60 % 60))"
+    local S="$((T % 60))"
     if [ "$D" -gt 7 ]; then
-        printf "%dd %s %s\\n" "$D" "$sep" "$2"
+        printf "%dd %s %s\\n" "$((D + 1))" "$sep" "$2"
     elif [ "$D" -gt 0 ]; then
         if [ "$H" -gt 0 ]; then
             printf "%dd %02dh %s %s\\n" "$D" "$H" "$sep" "$2"

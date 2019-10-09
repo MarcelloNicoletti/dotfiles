@@ -30,9 +30,10 @@ function content_size () {
     local stripped="$(echo "$1" | perl -pe "s/\#\[.*?\]//g")"
     if [ -x /usr/local/bin/gwc ]; then
         # gnu wc (brew installed as gwc) has -L for max line length
-        echo $stripped | /usr/local/bin/gwc -L
+        #  this accounts for "full width" characters in unicode
+        echo "$stripped" | /usr/local/bin/gwc -L
     else
-        echo ${#stripped}
+        echo "${#stripped}"
     fi
 }
 
@@ -100,7 +101,7 @@ function new_section () {
     # 2 Foreground colour
     # 3 Background colour
     # 4 Extra formatting or blank if no extra formatting but 5th argument
-#     5 Estimate of length of evaluated template
+    # 5 Estimate of length of evaluated template
 
     if [ -z "$1" ]; then
         return
@@ -116,7 +117,10 @@ function new_section () {
 
 # Extra Calculations
 
-np_w="$(( "$max_width" - 33 ))"
+# Magic number 28 is from the two date sections
+# TODO: Figure out why something that is too big for 120 still dissapears on 262
+# For example with magic number of 25 while playing Polygondwanaland
+np_w="$(( max_width - 28 ))"
 
 # Sections: new_section 1 2 3 4
 # Argument order for sections
