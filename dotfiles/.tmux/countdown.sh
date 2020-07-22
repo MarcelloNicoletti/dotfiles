@@ -15,9 +15,11 @@ function displaytime {
     # but then 7 days 12 hours to ... and so on
     local T="$1"
     local sep="to"
+    local down="true"
 
     if [[ $T -lt 0 ]] && [[ $3 ]]; then
-        sep="since"
+        sep="$3"
+        down="false"
         T="$((T * -1))"
     fi
 
@@ -26,7 +28,10 @@ function displaytime {
     local M="$((T / 60 % 60))"
     local S="$((T % 60))"
     if [ "$D" -gt 7 ]; then
-        printf "%dd %s %s\\n" "$((D + 1))" "$sep" "$2"
+        if [ "$down" = "true" ]; then
+            D="$((D + 1))"
+        fi
+        printf "%dd %s %s\\n" "$D" "$sep" "$2"
     elif [ "$D" -gt 0 ]; then
         if [ "$H" -gt 0 ]; then
             printf "%dd %02dh %s %s\\n" "$D" "$H" "$sep" "$2"
