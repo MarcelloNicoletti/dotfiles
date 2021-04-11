@@ -18,3 +18,5 @@
 	lineNumber = true
 [alias]
 	g = grep --break --heading --line-number
+[pull]
+	ff = only
